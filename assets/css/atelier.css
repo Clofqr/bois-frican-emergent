@@ -1,0 +1,111 @@
+.medium {
+  width: 100%;
+  height: 350px;
+  margin: 20px auto 10px;
+  max-width: 500px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+}
+
+.medium2 {
+  flex: 1 1 45%;
+  width: 100%;
+  height: 400px; 
+  max-width: 500px;
+  border-radius: 10px;
+  object-fit: cover; 
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0;
+}
+
+/* Conteneur principal */
+.atelier-wrapper1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto 30px;
+  max-width: 2000px;
+  padding: 0 20px;
+}
+
+/* Ligne contenant deux blocs (image + texte) */
+.atelier-row1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch; 
+  flex-direction: wrap; 
+  gap: 15px;
+  width: 100%;
+}
+
+/* Bloc image + texte */
+.atelier-images1 {
+  flex: 1 1 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+}
+
+.atelier-images2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+}
+
+/* Texte associé à un atelier */
+.atelier-texte1,
+.atelier-texte2{
+  flex: 1 1 45%;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: justify; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+/* Listes internes */
+.atelier-texte1 ul,
+.atelier-texte2 ul {
+  list-style-position: inside;
+  padding-left: 0;
+}
+
+/* Lien “+ d’infos” */
+.atelier-texte1 a,
+.atelier-texte2 a {
+  color: #6b3fa0;
+  font-weight: 500;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.atelier-texte1 a:hover,
+.atelier-texte2 a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .atelier-row1 {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 0 15px;
+  }
+}
