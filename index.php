@@ -1,4 +1,4 @@
 <?php
 
-require 'fbf_accueil.php';
+require 'accueil/fbf_accueil.php';
 
