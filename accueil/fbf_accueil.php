@@ -1,5 +1,6 @@
 <?php
 $title = "Accueil";
+$basePath = '../';
 
 $headerImage = "accueil/bienvenue_cover.jpg";
 

@@ -206,20 +206,28 @@ header {
 
 /* --- Menu Responsive --- */
 @media (max-width: 900px) {
-  /* Affichez le bouton hamburger */
+  /* Bouton hamburger avec bordure noire fine */
   .hamburger-btn {
     display: block;
     position: absolute;
-    top: 20px; /* Ajustez la position */
-    right: 20px; /* Ajustez la position */
-    font-size: 30px;
+    top: 20px;
+    right: 20px;
+    font-size: 28px;
+    padding: 6px 12px;
     background-color: #e6cc3d;
-    border: none;
+    border: 1px solid #000; /* bordure fine noire */
+    border-radius: 6px;
     cursor: pointer;
-    z-index: 1001; /* Placez le bouton au-dessus de tout */
+    z-index: 1001;
+    line-height: 1;
   }
 
-  /* Cachez les liens du menu par défaut */
+  .hamburger-btn:focus {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+  }
+
+  /* Menu déroulant du hamburger */
   .nav-links {
     display: none;
     flex-direction: column;
@@ -228,13 +236,56 @@ header {
     left: 0;
     width: 100%;
     background-color: #e6cc3d;
-    padding-top: 60px; /* Espace pour le bouton */
+    padding: 70px 12px 12px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    gap: 8px;
   }
 
-  /* Affichez les liens lorsque le menu est actif */
   .nav-links.active {
     display: flex;
+  }
+
+  /* Chaque item du menu hamburger : bordure noire fine */
+  .nav-links li {
+    width: 100%;
+    padding: 0;
+  }
+
+  .nav-links li .btn,
+  .nav-links li a.btn {
+    display: block;
+    width: 100%;
+    border: 1px solid #000; /* bordure fine noire */
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 17px;
+    box-shadow: none;
+    text-align: center;
+  }
+
+  /* Dropdown interne (Découverte / Infos Pratiques) sur mobile */
+  .nav-links .dropdown-content {
+    position: static;
+    display: none;
+    width: 100%;
+    box-shadow: none;
+    border: 1px solid #000;
+    border-radius: 8px;
+    margin-top: 6px;
+    background-color: #f5dc63;
+  }
+
+  .nav-links .dropdown:hover .dropdown-content,
+  .nav-links .dropdown .dropdown-content.show {
+    display: block;
+  }
+
+  .nav-links .dropdown-content a {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+  }
+
+  .nav-links .dropdown-content a:last-child {
+    border-bottom: none;
   }
 }
 
@@ -360,9 +411,28 @@ footer h2 {
     padding-left: 0;
 }
 
-.footer-content a {
+.footer-content a,
+.footer-link {
     display: block;
     margin: 10px 0;
+    color: #333;
+    text-decoration: none;
+}
+
+.footer-content a:hover,
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+.footer-mentions {
+    color: #050a9f;
+    text-decoration: none;
+    margin: 10px 0;
+    display: inline-block;
+}
+
+.footer-mentions:hover {
+    text-decoration: underline;
 }
 
 .footer-bottom {
@@ -914,28 +984,45 @@ h3 {
     text-align: center;
 }
 
+.contact-content {
+    padding: 0 16px;
+}
+
 .form-container {
     display: flex;
-    margin-bottom: 30px;
+    gap: 24px;
+    margin: 30px auto;
     justify-content: center;
-    max-width: 100%;
+    align-items: stretch;
+    max-width: 1100px;
     border-radius: 10px;
-    overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: left;
-    padding: 40px;
+    padding: 32px;
+    background: #fff;
 }
 
 .form {
+    flex: 1 1 55%;
+    display: flex;
     flex-direction: column;
-    align-content: center;
-    width: 50%;
-    padding: 10px;
+    padding: 0;
+    min-width: 0;
+}
+
+.form form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .image-container {
-    width: auto;
-    height: 100%;
+    flex: 1 1 40%;
+    max-width: 400px;
+    height: auto;
+    align-self: center;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 
@@ -946,12 +1033,24 @@ label {
 }
 
 input, textarea {
-    width: 90%; /* Réduit la largeur des champs */
+    width: 100%;
     padding: 10px;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+input:focus, textarea:focus {
+    outline: 2px solid #e6cc3d;
+    border-color: #e6cc3d;
 }
 
 .bouton {
@@ -964,28 +1063,51 @@ input, textarea {
     border-radius: 50px;
     font-size: 18px;
     cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.bouton:hover {
+    background-color: #111;
+}
+
+.bouton:active {
+    transform: translateY(1px);
+}
+
+.feedback-success,
+.feedback-error {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.feedback-success {
+    background-color: #e0f2a2;
+    color: #2b4d0a;
+    border: 1px solid #b6d16a;
+}
+
+.feedback-error {
+    background-color: #fde2e2;
+    color: #7a1a1a;
+    border: 1px solid #f1a4a4;
 }
 
 .nous {
-    width: 300px; /* Définissez la largeur souhaitée */
-    height: 300px; /* Définissez la hauteur souhaitée, identique à la largeur pour un cercle parfait */
-    border-radius: 50%; /* Rend les coins de l'image arrondis pour former un cercle */
-    object-fit: cover; /* Assure que l'image couvre entièrement l'espace sans déformation */
-    
-    position: absolute;        /* Sort l’élément du flux normal */
-    top: 20px;                 /* Légère marge en haut */
-    left: 20px;                /* Légère marge à gauche */
-    z-index: 10;               /* Pour qu’elle soit bien  */ 
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
 }
-
-.image-container {
-    height: 80%;
-}
-        /* Nécessaire pour que `.nous` se positionne par rapport au body */
-
 
 .contact h1 {
-  margin-top: 20px; /* ajuste cette valeur selon ton besoin */
+  margin-top: 20px;
 }
 
 body.contact main {
@@ -995,20 +1117,36 @@ body.contact main {
 /* Responsive Page Contact */
 @media (max-width: 1000px) {
   .form-container {
-    flex-direction: column; /* Le formulaire et l'image s'empilent */
+    flex-direction: column;
     padding: 20px;
+    gap: 16px;
   }
 
   .form {
-    width: 100%; /* Le formulaire prend toute la largeur */
+    width: 100%;
+    flex: 1 1 100%;
   }
 
   .form-container .image-container {
-    display: none; /* Cache l'image sur mobile pour gagner de la place */
+    display: none;
   }
-  
-  /* Masque l'image "nous" pour éviter qu'elle ne se superpose au contenu */
+
   .nous {
     display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-container {
+    padding: 14px;
+    margin: 20px auto;
+  }
+
+  .bouton {
+    font-size: 16px;
+  }
+
+  body.contact main {
+    margin-top: 60px;
   }
 }

@@ -2,6 +2,13 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// $basePath : chemin relatif vers la racine du site depuis la page courante.
+//   - Pages à la racine  : './'   (défaut)
+//   - Pages dans un sous-dossier (ex: accueil/) : '../'
+// Ainsi le projet reste portable : il fonctionne aussi bien dans un sous-dossier
+// (ex: http://localhost/Ferme2/) qu'à la racine d'un domaine (https://leboisfrican.fr/).
+$basePath = $basePath ?? './';
 ?>
 
 <!DOCTYPE html>
@@ -10,12 +17,11 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?= $title ?? "La Ferme du Bois Frican"?></title>
-    <base href="/Ferme2/">
-    <link rel="stylesheet" href="fbf_style_test.css" />
-    <link rel="stylesheet" href="/Ferme2/assets/css/accueil.css" />
-    <link rel="stylesheet" href="/Ferme2/assets/css/carousel.css" />
-    <link rel="stylesheet" href="/Ferme2/assets/css/atelier.css" />
-    <link rel="stylesheet" href="/Ferme2/assets/css/animaux.css"/>
+    <link rel="stylesheet" href="<?= $basePath ?>fbf_style_test.css" />
+    <link rel="stylesheet" href="<?= $basePath ?>assets/css/accueil.css" />
+    <link rel="stylesheet" href="<?= $basePath ?>assets/css/carousel.css" />
+    <link rel="stylesheet" href="<?= $basePath ?>assets/css/atelier.css" />
+    <link rel="stylesheet" href="<?= $basePath ?>assets/css/animaux.css"/>
 </head>
 
 <body class="<?php 
@@ -33,36 +39,37 @@ if (session_status() === PHP_SESSION_NONE) {
     <?php
     $navContent = '
 <nav class="container">
-  <button class="hamburger-btn">
+  <button class="hamburger-btn" type="button" aria-label="Ouvrir le menu" aria-expanded="false" data-testid="hamburger-btn">
     &#9776; </button>
-  <ul class="nav-links">
-    <li><a class="btn" href="/Ferme2/accueil/fbf_accueil.php"><strong>Accueil</strong></a></li>
+  <ul class="nav-links" data-testid="nav-links">
+    <li><a class="btn" href="' . $basePath . 'accueil/fbf_accueil.php"><strong>Accueil</strong></a></li>
     <li class="dropdown menu-btn">
-      <a class="btn dropbtn active-btn" href="./fbf_decouverte.php"><strong>Découverte</strong></a>
+      <a class="btn dropbtn active-btn" href="' . $basePath . 'fbf_decouverte.php"><strong>Découverte</strong></a>
       <div class="dropdown-content">
-        <a href="fbf_decouverte.php#ateliers">Les ateliers</a>
-        <a href="fbf_decouverte.php#animaux">Les animaux</a>
-        <a href="fbf_decouverte.php#ferme">La vie à la ferme</a>
+        <a href="' . $basePath . 'fbf_decouverte.php#ateliers">Les ateliers</a>
+        <a href="' . $basePath . 'fbf_decouverte.php#animaux">Les animaux</a>
+        <a href="' . $basePath . 'fbf_decouverte.php#ferme">La vie à la ferme</a>
       </div>
     </li>
-    <li><a class="btn" href="./reservation_test.php" style="display: none;"><strong>Réservez</strong></a></li>
-    <li><a class="btn" href="./fbf_apropos.php"><strong>À propos</strong></a></li>
-    <li><a class="btn" href="./fbf_contact.php"><strong>Contact</strong></a></li>
-<li class="dropdown menu-btn">
-      <a class="btn dropbtn" href="./fbf_infopratique.php"><strong>Infos Pratiques</strong></a>
+    <li><a class="btn" href="' . $basePath . 'reservation_test.php" style="display: none;"><strong>Réservez</strong></a></li>
+    <li><a class="btn" href="' . $basePath . 'fbf_apropos.php"><strong>À propos</strong></a></li>
+    <li><a class="btn" href="' . $basePath . 'fbf_contact.php"><strong>Contact</strong></a></li>
+    <li class="dropdown menu-btn">
+      <a class="btn dropbtn" href="' . $basePath . 'fbf_infopratique.php"><strong>Infos Pratiques</strong></a>
       <div class="dropdown-content">
-        <a href="fbf_infopratique.php">- Séjours équestres</a>
-        <a href="fbf_infopratique.php">- Equithérapie</a>
-        <a href="fbf_infopratique.php">- Poney Eveil</a>
+        <a href="' . $basePath . 'fbf_infopratique.php">- Séjours équestres</a>
+        <a href="' . $basePath . 'fbf_infopratique.php">- Equithérapie</a>
+        <a href="' . $basePath . 'fbf_infopratique.php">- Poney Eveil</a>
       </div>
-    </li>  </ul>
+    </li>
+  </ul>
 </nav>';
     ?>
 
 <header class="header">
     <?php if (!empty($headerImage)) : ?>
         <div class="background-image">
-            <img class="size-image" src="<?php echo htmlspecialchars(trim($headerImage)); ?>">
+            <img class="size-image" src="<?php echo htmlspecialchars($basePath . trim($headerImage)); ?>" alt="">
             <?php endif; ?>
             
             <div class="cover">
@@ -87,8 +94,8 @@ if (session_status() === PHP_SESSION_NONE) {
         <?= $mainContent ?? '' ?>
     </main>
  
-<script src="./assets/js/menu.js" defer ></script>    
-<script src="./assets/js/carousel.js" defer ></script>
+<script src="<?= $basePath ?>assets/js/menu.js" defer ></script>    
+<script src="<?= $basePath ?>assets/js/carousel.js" defer ></script>
     
 </body>
 </html>
