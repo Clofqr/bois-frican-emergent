@@ -82,3 +82,33 @@ Rapport : `/app/test_reports/iteration_1.json`
 ### Testing agent : 11/11 checks PASSED (100 %)
 Rapport : `/app/test_reports/iteration_2.json`
 Mesures : image bottom = 500px @1920/1440, 320px @900, 244px @390. Gap image→titre 95-105px partout.
+
+## Itération 4 (2026-01)
+
+### Bugs corrigés
+- **Carrousel Accueil - images invisibles** : la page est dans `/accueil/` mais les src pointaient vers `images/...` → 404. Corrigé en `../images/...` pour les 8 images. Suppression du <video src="../images/video1.mp4"> (45MB, bloquait le chargement et affichait un slide vide en position 0).
+- **Boutons carrousel Apropos empiétaient sur les images** : `left: 60px` / `right: 70px` sur un container de 800px → boutons au milieu de l'image. Fix dans `/app/assets/css/carousel.css` : `left: 10px` / `right: 10px`, boutons ronds 42x42 avec chevrons SVG-like en pseudo-éléments, font-size 0 (masque le texte). Sur ≤600px : 36x36 et 6px.
+- **`object-fit: contain` sur apropos** remplacé par `cover` → l'image remplit tout le container, les boutons sont donc bien collés aux BORDS des images (et pas dans des bandes vides).
+- **Height container accueil** aligné de 500px à 400px (fix cosmétique testing agent : plus de bande vide de 100px en bas).
+
+### Testing agent : 9/9 scenarios PASS (100 %)
+Rapport : `/app/test_reports/iteration_3.json`
+- Container 800px = image width 800px sur apropos (plus de bande latérale)
+- Gap prev/next → bord = 10px exactement sur les deux carrousels
+- 8 images accueil chargées, translateX(-1200px) après 2 clics next
+
+## Itération 5 (2026-01)
+
+### Bugs corrigés
+- **Apropos carrousel : `object-fit: contain` restauré** (user voulait garder les propriétés d'origine, pas de crop). Les boutons prev/next restent collés aux bords du container.
+- **Accueil : vidéo remise en 1er slide** avec `poster="../images/gallery_accueil2.jpg"` fallback + `preload="metadata"` + `playsinline`. Si la vidéo (44 MB) n'arrive pas à se charger, le poster reste affiché → l'utilisateur voit toujours quelque chose.
+- **Feedback formulaire contact plus caché derrière .nous** : ajout `position: relative; z-index: 20` sur `.feedback-success` / `.feedback-error` (.nous a z-index 10).
+
+### Testing agent : 3/3 checks PASS (100 %)
+Rapport : `/app/test_reports/iteration_4.json`
+- Apropos : object-fit === 'contain' sur les 8 images
+- Video : <video> en 1er enfant, poster attribute non-vide, hit-test au centre retourne VIDEO
+- Contact feedback : z-index 20, position relative, hit-test retourne .feedback-error (pas .nous)
+
+### Recommandation testing agent (non-bloquant)
+- Compresser `images/video1.mp4` (44 MB → idéalement < 5 MB, MP4 faststart) pour que la vidéo joue réellement au lieu d'afficher seulement le poster. Le fichier actuel dépasse ce que Chromium peut charger en une passe → networkState=3.

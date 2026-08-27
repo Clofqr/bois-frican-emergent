@@ -1,0 +1,28 @@
+{
+  "summary": "Frontend-only Playwright validation of the 2 reported carousel bugs plus regressions (9/9 scenarios PASS). Accueil (/accueil/fbf_accueil.php): #carousel-menu now contains exactly 8 <img> (0 <video>), all resolve to /images/... (absolute http URLs, no /accueil/images/), img.complete === true and naturalWidth > 0 for all 8. First image gallery_accueil2.jpg is visible at x=container.x with width 600px. Two clicks on .carousel-next produce style.transform = translateX(-1200px) and exactly one image (vaches_gallery6.jpg) inside the container viewport. Apropos (/fbf_apropos.php): container .carousel-container-apropos = 800px wide, prev gap = 10px, next gap = 10px (both <= 20px, buttons flush to image edges); first .carousel-item-apropos img width = 800px == container width, object-fit = 'cover' (no side bands); all 8 images loaded. Round buttons on both carousels: 42x42, border-radius 50%, font-size 0px (labels 'Precedent'/'Suivant' invisible), ::before chevron pseudo-element present. Apropos JS regression: 3x next -> translateX(-2400px), 1x prev -> translateX(-1600px) (one step back). Mobile 390x800 on accueil: container 390px, first image loaded and full width, buttons 36x36 with 6px gaps. Scroll-to-top button ([data-testid=scroll-to-top-btn]) present and functional on both pages (scrollY back to 0).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Accueil - #carousel-menu", "issues": ["Cosmetic: .carousel-container height is 500px while .carousel-slide img height is 400px, leaving ~100px of empty background inside the rounded container below the image (visible gap before the footer, more noticeable on mobile 390x800). Suggest height:400px or height:auto."]},
+      {"screen": "A propos - #carousel-apropos", "issues": ["Cosmetic: several source images are very low resolution (presentation.jpg, animaux_gallery.jpg, Jules.jpg, vaches_gallery_3.jpg have naturalWidth = 240px) and are upscaled to 800x400 with object-fit:cover, so they appear blurry. Replace with higher-resolution originals."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional cosmetic: align .carousel-container height (500px) with the 400px image height on the accueil carousel to remove the empty strip.",
+    "Optional: replace the 240px-wide images in the a-propos carousel with higher-resolution files (currently blurry after upscale to 800px)."
+  ],
+  "critical_code_review_comments": [
+    "assets/js/carousel.js smoothReturnToStart() animates back to 0 but leaves carouselSlide.style.transition = 'none'; the next click after a full loop jumps instantly without the 0.6s ease (transition is re-set inside updateCarousel, so impact is limited to the first frame - low risk but worth noting).",
+    "carousel.css keeps a duplicated rule block for .carousel-slide img (lines 20-25 then 27-33 with max-width:700px overridden by width:100%); safe to collapse into one rule (DRY)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested (frontend-only request)", "frontend": "100% (9/9 scenarios)"},
+  "seed_data_creation": "none",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Both reported bugs (accueil gallery images not displaying, apropos prev/next buttons overlapping images) are fixed and verified at 1440x900 and 390x800. Only cosmetic items remain: 100px dead space inside the 500px-high accueil carousel container, and low-res source images on the apropos carousel. Test via public preview URL, PHP served on port 3000; wait ~900-1500ms after each arrow click before reading style.transform.",
+  "rca_of_the_issue": "Bug #1 was caused by the removed 45MB <video> element plus relative image paths resolving against the /accueil/ subfolder; now all 8 imgs use ../images/... and resolve to /images/... and load correctly. Bug #2 was caused by .carousel-prev/.carousel-next being offset at left:60px/right:70px and by object-fit:contain leaving empty side bands; unified carousel.css (left/right:10px, 42px round buttons) and object-fit:cover fix it - measured gaps are exactly 10px on both carousels."
+}

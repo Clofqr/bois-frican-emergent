@@ -1,0 +1,28 @@
+{
+  "summary": "Frontend-only Playwright validation of the 3 requested bug fixes on the public preview URL. ALL 3 CHECKS PASS. (1) /fbf_apropos.php: 8 images in #carousel-apropos .carousel-item-apropos, getComputedStyle().objectFit === 'contain' for all 8 (first image 800x400). (2) /accueil/fbf_accueil.php: first child of #carousel-menu .carousel-slide is <video class='carousel-video'> (isFirst true), poster='../images/gallery_accueil2.jpg' (non-empty), <source src='../images/video1.mp4'> resolving to https://.../images/video1.mp4 (HTTP 200, video/mp4), bounding rect 600x400 (>100x100), display block, and document.elementFromPoint at its center returns VIDEO.carousel-video (nothing on top). (3) /fbf_contact.php: filled all 7 data-testid inputs and submitted via [data-testid=contact-submit-btn]; after redirect the feedback [data-testid=contact-feedback-error] exists, zIndex='20' (>=20), position='relative', and elementFromPoint at feedback center returns DIV.feedback-error (the feedback itself, NOT the .nous image) -> stacking bug fixed.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Accueil carousel video playback", "issue": "The <video> element and its poster render correctly, but the media never actually loads: after 15s readyState stays 0 and networkState = 3 (NETWORK_NO_SOURCE), currentTime = 0, paused = true, video.error = null. images/video1.mp4 is 44 MB (content-length 45,515,863) served with cache-control: no-store and likely without byte-range support, so the browser gives up and only the poster frame is shown. Visually acceptable (poster) but the autoplay video never plays and it is a heavy request on every visit. Recommend a compressed/transcoded web version (<5 MB, faststart MP4 + WebM) or lazy-loading it.", "affected_selectors": ["#carousel-menu video.carousel-video"]}
+    ],
+    "design_issues": [
+      {"screen": "Contact - feedback", "issues": ["Submitting the contact form returns the error feedback 'Le service d'envoi de mail n'est pas configure...' (SMTP not configured in the preview env). Expected in this environment, but the success path (feedback-success) could not be exercised - only feedback-error stacking was verified (same CSS rule block .feedback-success/.feedback-error, so z-index/position apply identically)."]},
+      {"screen": "A propos - #carousel-apropos", "issues": ["With object-fit:contain restored (as requested), portrait/low-res images now show letterbox bands on the sides of the 800x400 frame - this is the intended behaviour per the request, noted only for awareness."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional: compress/transcode /app/images/video1.mp4 (currently 44MB, never reaches readyState>=2 in-browser) so the accueil first slide actually plays instead of showing only the poster."
+  ],
+  "critical_code_review_comments": [
+    "fbf_accueil.php uses preload='metadata' on a 44MB MP4; even metadata fetch fails (networkState 3). Serve a smaller faststart MP4 or use preload='none' with the poster as the intended visual."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested (frontend-only request)", "frontend": "100% (3/3 requested checks PASS)"},
+  "seed_data_creation": "One contact-form submission attempt with TEST data (qa.test@example.com); no data persisted (mail service not configured).",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "All 3 bugs of this iteration verified fixed at 1920x1080 via the public preview URL (PHP pages served directly, no /api usage). Only remaining item: video1.mp4 is 44MB and never loads in Chromium (poster only). Contact form always returns feedback-error in preview because SMTP is not configured; the success feedback path is untested but shares the same CSS rule.",
+  "rca_of_the_issue": "Fix verification: .carousel-item-apropos img in fbf_style_test.css (line ~1147) sets object-fit:contain and is not overridden by assets/css/carousel.css (which only targets .carousel-slide img with cover). .feedback-success/.feedback-error (fbf_style_test.css line ~1293) set position:relative; z-index:20, which lifts the feedback above the .nous circular image - confirmed by hit-testing. The accueil video was restored as the first child of .carousel-slide; its non-playback is a media-weight/range-request issue, not a markup issue."
+}
