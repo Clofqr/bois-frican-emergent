@@ -11,11 +11,14 @@ $headerContent = "<h1> Contactez-nous </h1>";
 $feedback_message = '';
 
 if (isset($_SESSION['form_success']) && $_SESSION['form_success']) {
-    $feedback_message = '<p class="feedback-success">Votre message a bien été envoyé ! Nous vous recontacterons bientôt.</p>';
+    $feedback_message = '<div class="feedback-success" role="status" tabindex="-1" data-testid="contact-feedback-success">
+        <strong>Merci !</strong> Votre message a bien été envoyé. Nous vous recontacterons dans les plus brefs délais.
+    </div>';
     unset($_SESSION['form_success']);
 }
 if (isset($_SESSION['form_error']) && !empty($_SESSION['form_error'])) {
-    $feedback_message = '<p class="feedback-error">' . $_SESSION['form_error'] . '</p>';
+    $feedback_message = '<div class="feedback-error" role="alert" tabindex="-1" data-testid="contact-feedback-error">'
+        . $_SESSION['form_error'] . '</div>';
     unset($_SESSION['form_error']);
 }
 
@@ -30,8 +33,8 @@ ob_start();
 
         <div class="form-container">
             <div class="form">
-                <form action="formulaire_contact.php" method="POST" novalidate data-testid="contact-form">
-                    <?= $feedback_message ?>
+                <?= $feedback_message ?>
+                <form action="formulaire_contact.php" method="POST" data-testid="contact-form">
                     <label for="name">Nom</label>
                     <input type="text" id="name" name="name" required data-testid="contact-input-name">
 
@@ -60,7 +63,7 @@ ob_start();
         </div>
 
         <h4>Mentions Légales et Conditions Générales d'utilisation</h4>
-        <a href="fbf_mentionslegales.pdf" target="_blank" rel="noopener">Télécharger le fichier pdf</a>
+        <a href="fbf_mentionslegales.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf" data-testid="mentions-legales-link">Consulter les mentions légales</a>
     </div>
 
 <?php

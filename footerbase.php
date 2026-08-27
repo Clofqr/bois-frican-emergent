@@ -8,10 +8,6 @@
             <li>Email : gaec@leboisfrican.fr</li>
         </ul>
         <a class="footer-link" href="<?= $basePath ?>fbf_contact.php">@ Nous contacter</a>
-        <ul class="socials">
-            <li><a class="footer-link" href="#" aria-label="Facebook">Facebook</a></li>
-            <li><a class="footer-link" href="#" aria-label="Instagram">Instagram</a></li>
-        </ul>
     </div>
 
     <a class="footer-mentions" href="<?= $basePath ?>fbf_contact.php">Mentions Légales</a>
