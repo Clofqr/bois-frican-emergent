@@ -1,0 +1,25 @@
+{
+  "summary": "Frontend-only Playwright testing of two changes: (1) new scroll-to-top button (data-testid='scroll-to-top-btn') and (2) Infos Pratiques header image overflow bug. All 11 requested checks PASS. Button is a <button type='button'>, present on / , /fbf_contact.php, /fbf_apropos.php, /fbf_decouverte.php, /fbf_infopratique.php, /fbf_mentionslegales.php, /accueil/fbf_accueil.php (all HTTP 200); hidden at top (no 'visible' class, opacity 0 + visibility hidden), becomes visible & in-viewport after scrollTo(0,1000), smooth-scrolls back to pageYOffset=0 on click and auto-hides again. Verified on desktop 1440 and mobile 390 (hit-test confirms button is topmost, not overlaid). Infos Pratiques header: image .size-image bottom = 500px @1920 and @1440 (<=550), 320px @900 (<=400), 243.8px @390 (<=300); first .atelier-titre ('Poney Éveil') always strictly below the image with gap 95-105px (in 30-200 range) - no overlap of 'Poney Éveil' / 'Équithérapie' / 'Séjours Équestre'. Regression on /accueil/fbf_accueil.php @1920: header image loads (naturalWidth 2048, rendered 1920x1081) and title \"A ch'val au Bois Frican !\" present - unaffected by body.infopratique rules. No console errors and no error-class elements found.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/fbf_infopratique.php @390px (mobile)", "issues": ["Header title 'Infos Pratiques' sits directly over the panneau.jpg sign graphic; dark text on a busy mid-tone image reduces legibility (cosmetic only, not the reported overflow bug)"]}
+    ]
+  },
+  "test_report_links": ["/app/test_reports/iteration_2.json"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "fbf_style_test.css around line 492-495: 'body.infopratique .scroll-arrow-container { display: none; }' is followed by an extra closing brace inside/after a media block - verify brace balance so later rules are not silently dropped (no visible impact observed in tests, but worth a cleanup).",
+    "Templatebase.php line 34 adds body class 'scroll-top-visible' for Ferme/Animaux/Ateliers titles, but no CSS rule uses it - dead code, remove or implement.",
+    "menu.js uses deprecated window.pageYOffset; window.scrollY is preferred (works today, minor modernization)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested (frontend-only request)", "frontend": "100% (11/11 checks passed)"},
+  "seed_data_creation": "none",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Scroll-to-top button and Infos Pratiques header layout fully validated at 1920/1440/900/390 viewports. Only cosmetic mobile header-title contrast note remains. Tests were done via inline Playwright scripts (no persisted test file); PHP site served on port 3000 via preview URL.",
+  "rca_of_the_issue": "Original overflow was caused by the unbounded header image height; the new body.infopratique .background-image aspect-ratio + max-height + object-fit: cover rules correctly bound the image (500/320/260px caps) so main content starts below it at every tested breakpoint."
+}

@@ -107,8 +107,36 @@ body.no-header-image .header-title h1 {
 }
 
 body.infopratique main {
-    margin-top: 200px;
+    margin-top: 20px;
 }
+
+/* Header Infos Pratiques : image contenue + hauteur bornée pour éviter
+   qu'elle passe sous le contenu sur grand écran (aspect 16:6 responsive). */
+body.infopratique header {
+    height: auto;
+    max-height: none;
+    margin-bottom: 30px;
+}
+
+body.infopratique .background-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 6;
+    max-height: 500px;
+    overflow: hidden;
+}
+
+body.infopratique .size-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+body.infopratique .cover {
+    top: 20px;
+}
+
 body.mentionslegales main {
     margin-top: 20px;
 }
@@ -120,11 +148,22 @@ body.mentionslegales main {
     body.no-header-image .header-title h1 {
         font-size: 1.5rem;
     }
+    body.infopratique .background-image {
+        aspect-ratio: 16 / 8;
+        max-height: 320px;
+    }
     body.infopratique main {
-        margin-top: 120px;
+        margin-top: 15px;
     }
     body.mentionslegales main {
         margin-top: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    body.infopratique .background-image {
+        aspect-ratio: 16 / 10;
+        max-height: 260px;
     }
 }
 
@@ -1296,4 +1335,62 @@ body.contact main {
   body.contact main {
     margin-top: 60px;
   }
+}
+/* === Bouton "remonter en haut" (fixe en bas à droite) === */
+.scroll-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e6cc3d;
+    color: #1a1a1a;
+    border: 1px solid #000;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    z-index: 999;
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+    background-color: #f0d549;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.scroll-to-top:focus-visible {
+    outline: 2px solid #000;
+    outline-offset: 3px;
+}
+
+.scroll-to-top svg {
+    width: 22px;
+    height: 22px;
+}
+
+@media (max-width: 600px) {
+    .scroll-to-top {
+        bottom: 16px;
+        right: 16px;
+        width: 44px;
+        height: 44px;
+    }
+    .scroll-to-top svg {
+        width: 20px;
+        height: 20px;
+    }
 }

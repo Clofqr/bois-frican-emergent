@@ -66,3 +66,19 @@ Cloner le repo https://github.com/Clofqr/bois-frican.git et corriger :
 
 ### Testing agent : 9/9 scénarios PASSED (100 %)
 Rapport : `/app/test_reports/iteration_1.json`
+
+## Itération 3 (2026-01)
+
+### Nouvelles features
+- **Bouton "remonter en haut"** : présent sur toutes les pages via Templatebase.php.
+  - `<button class="scroll-to-top" data-testid="scroll-to-top-btn">` positionné fixed bottom-right, avec un chevron SVG.
+  - JS dans `menu.js` : toggle la classe `.visible` selon `window.scrollY > 400`. Click → `window.scrollTo({top: 0, behavior: 'smooth'})`.
+  - Styles CSS : rond jaune 48px (44px mobile), border 1px noire, ombre, transitions opacity/transform, focus-visible accessible.
+
+### Correction bug
+- **Header Infos Pratiques débordait sur grand écran** (image 1920×999 recouvrait Poney Éveil, Équithérapie, Séjours). Fix : rules dédiées `body.infopratique .background-image { aspect-ratio: 16/6; max-height: 500px; overflow: hidden }` + `object-fit: cover` sur l'image. Breakpoints responsive : 16/8 max 320px sous 900px, 16/10 max 260px sous 600px.
+- N'affecte pas Accueil / Découverte (règles ciblées `body.infopratique`).
+
+### Testing agent : 11/11 checks PASSED (100 %)
+Rapport : `/app/test_reports/iteration_2.json`
+Mesures : image bottom = 500px @1920/1440, 320px @900, 244px @390. Gap image→titre 95-105px partout.

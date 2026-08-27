@@ -103,6 +103,26 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /* ============================================================
+       Bouton "remonter en haut"
+       ============================================================ */
+    const topBtn = document.querySelector('.scroll-to-top');
+    if (topBtn) {
+        const toggleTopBtn = function () {
+            if (window.pageYOffset > 400) {
+                topBtn.classList.add('visible');
+            } else {
+                topBtn.classList.remove('visible');
+            }
+        };
+        toggleTopBtn();
+        window.addEventListener('scroll', toggleTopBtn, { passive: true });
+
+        topBtn.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    /* ============================================================
        Feedback formulaire de contact : scroll pour bien le rendre visible.
        Pas d'auto-suppression : le message reste tant que l'utilisateur
        est sur la page (il disparaîtra au prochain chargement, la session

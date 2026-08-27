@@ -94,6 +94,17 @@ $basePath = $basePath ?? './';
    
         <?= $mainContent ?? '' ?>
     </main>
+
+    <button
+        type="button"
+        class="scroll-to-top"
+        aria-label="Remonter en haut de la page"
+        data-testid="scroll-to-top-btn"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M12 4l-8 8h5v8h6v-8h5z"/>
+        </svg>
+    </button>
  
 <script src="<?= $basePath ?>assets/js/menu.js" defer ></script>    
 <script src="<?= $basePath ?>assets/js/carousel.js" defer ></script>
