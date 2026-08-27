@@ -103,21 +103,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /* ============================================================
-       Feedback formulaire de contact : scroll et disparition auto
+       Feedback formulaire de contact : scroll pour bien le rendre visible.
+       Pas d'auto-suppression : le message reste tant que l'utilisateur
+       est sur la page (il disparaîtra au prochain chargement, la session
+       étant déjà consommée côté PHP).
        ============================================================ */
     const feedback = document.querySelector('.feedback-success, .feedback-error');
     if (feedback) {
         setTimeout(function () {
-            feedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            feedback.focus && feedback.focus();
-        }, 100);
-        // Retire le message succès après 10s pour libérer l'espace visuel
-        if (feedback.classList.contains('feedback-success')) {
-            setTimeout(function () {
-                feedback.style.transition = 'opacity 0.6s ease';
-                feedback.style.opacity = '0';
-                setTimeout(function () { feedback.remove(); }, 700);
-            }, 10000);
-        }
+            try {
+                feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (err) { /* no-op */ }
+        }, 150);
     }
 });

@@ -28,12 +28,13 @@ ob_start();
     <img class="nous" src="images/contact_bulle.jpg" alt="contact">
 
     <div class="contact-content">
+        <?= $feedback_message ?>
+
         <h3> Impasse du Bois Frican 61330 Céaucé </h3>
         <h3>Nous joindre par téléphone 06.35.17.86.90</h3>
 
         <div class="form-container">
             <div class="form">
-                <?= $feedback_message ?>
                 <form action="formulaire_contact.php" method="POST" data-testid="contact-form">
                     <label for="name">Nom</label>
                     <input type="text" id="name" name="name" required data-testid="contact-input-name">

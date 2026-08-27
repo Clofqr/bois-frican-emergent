@@ -1,17 +1,13 @@
 <?php
 $title = 'Infos Pratiques';
 
-$headerImage = '';
+$headerImage = 'images/panneau.jpg';
 
 $headerContent ='
 <h1> Infos Pratiques </h1>
 ';
 
 $mainContent ='
-
-<div class="cadre">
-    <img class="acces-photo" src="images/panneau.jpg" alt="Accès">
-</div>
 
 <div class="atelier-wrapper">
   <div class="atelier-row">

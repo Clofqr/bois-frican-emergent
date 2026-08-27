@@ -49,3 +49,20 @@ Cloner le repo https://github.com/Clofqr/bois-frican.git et corriger :
 - P2 : SEO (meta description, Open Graph, sitemap.xml).
 - P2 : Optimisation images (WebP, lazy loading).
 - P2 : Formulaire de réservation (le lien "Réservez" est actuellement `display: none`).
+
+## Itération 2 (2026-01)
+
+### Corrections
+- **Espace apropos** : `body.apropos .cadre` margin-top 120px → 20px
+- **Espace contact** : `body.contact main` margin-top 100px → 20px
+- **Header Infos Pratiques** : `$headerImage = 'images/panneau.jpg'` (comme Accueil / Découverte). Ajout de `body.infopratique main { margin-top: 200px }` pour laisser la place au header. Le vieux bloc `.cadre > .acces-photo` supprimé du mainContent.
+- **Nouvelle page Mentions Légales HTML** : `fbf_mentionslegales.php` refaite en HTML pur (7 sections numérotées, style cohérent, placeholders `[À COMPLÉTER — ...]` mis en valeur en jaune pour SIRET / RCS / Hébergeur — à compléter par le GAEC). Plus de dépendance au PDF.
+- **Feedback formulaire** : déplacé hors du form-container, directement dans `.contact-content` au-dessus des h3 → visible immédiatement après la redirection, jamais caché par le layout flex. JS simplifié : scroll seul, plus d'auto-suppression du success.
+
+### Corrections issues du testing agent (code review)
+- `formulaire_contact.php` : suppression du `htmlspecialchars()` sur les champs stockés (les emails arrivaient avec `&#039;` au lieu d'apostrophes). L'échappement HTML n'est nécessaire qu'à l'output HTML, pas dans un corps d'email texte.
+- `formulaire_contact.php` : `last_submit` est maintenant aussi défini en cas d'échec SMTP (anti-spam robuste contre les rejeux).
+- `Templatebase.php` : balise `</div>` orpheline (background-image) corrigée quand `$headerImage` est vide.
+
+### Testing agent : 9/9 scénarios PASSED (100 %)
+Rapport : `/app/test_reports/iteration_1.json`

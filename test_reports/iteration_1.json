@@ -1,0 +1,26 @@
+{
+  "summary": "Frontend-only Playwright testing of the PHP site 'La Ferme du Bois Frican' on the Preview URL. All 5 reported bugs/regressions verified as FIXED: (3) contact form feedback banner renders and is visible after POST redirect with the expected SMTP-not-configured error text; (4) /fbf_infopratique.php now has .background-image > img.size-image (src ./images/panneau.jpg, 1920x999, visible) with h1 'Infos Pratiques' overlaid, body class = 'infopratique' only (no 'no-header-image'); (5) /fbf_mentionslegales.php returns 200, h1 'Mentions Légales', all 7 numbered sections present, placeholders mentions-siret / mentions-rcs / mentions-hebergeur-nom visible with 'À COMPLÉTER' text, reachable via footer link (data-testid=footer-mentions -> ./fbf_mentionslegales.php, click navigates correctly). Spacing regressions: À propos nav-bottom -> first .photo = 60px (<100 PASS); Contact nav-bottom -> first h3 'Impasse du Bois Frican' = 78.7px (<100 PASS). Footer: footer-mailto href = mailto:gaec@leboisfrican.fr, zero Facebook/Instagram occurrences in HTML. Mobile 390x800 hamburger: menu opens, clicking 'Découverte' navigates to /fbf_decouverte.php and 'Infos Pratiques' to /fbf_infopratique.php (direct navigation, no submenu trap). /fbf_decouverte.php 200 with #ateliers, #animaux, #ferme; /fbf_infopratique.php shows Poney Éveil, Équithérapie, Séjours Équestre and the Google Maps iframe. All 10 site pages return 200 with no PHP Fatal/Warning/Notice/Deprecated strings in the output.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Pages without header image (Contact, À propos, Mentions Légales)", "issues": ["Header title h1 is right-aligned/off-center on Contact (h1 x=1214 of 1920 viewport) while nav buttons are also right-grouped, leaving a large empty left area — visually inconsistent with the centered title on the image-header pages (Accueil, Infos Pratiques). Cosmetic only, not part of the requested fixes."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "formulaire_contact.php: $_SESSION['last_submit'] is only set on successful send, so the 30s anti-spam throttle never applies on failure paths (currently every submit fails because SMTP is unconfigured) — set last_submit before/regardless of the send outcome.",
+    "Templatebase.php: the header markup is unbalanced when $headerImage is empty — <div class=\"background-image\"> is conditionally opened but the matching </div> (line 88) is always emitted, leaving a stray closing tag. Browsers recover, but it should be inside the same if-block.",
+    "formulaire_contact.php applies htmlspecialchars() to fields before injecting them into a plain-text email body, so recipients see HTML entities (e.g. &#039;) in the mail; escape only at output, not at storage/send."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only request)", "frontend": "100% (9/9 scenarios passed)"},
+  "seed_data_creation": "None. Contact form POSTs sent with test data (Dupont/Jean/jean@example.com); no persistence, no mail sent (SMTP unconfigured as expected).",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "/app/memory/test_credentials.md is a template with no credentials; not needed (site has no auth flow under test).",
+  "context_for_next_testing_agent": "Site is PHP served by php -S on port 3000 via yarn shim; no /api backend used by these pages. Preview URL: https://b95ee6c6-fa3b-4485-84ec-46e69705fd61.preview.emergentagent.com. Contact feedback relies on PHP session flash (form_error/form_success) after 302 redirect — must follow redirect in the same browser context. Anti-spam 30s throttle only triggers after a successful send. No pytest files created (frontend-only scope).",
+  "rca_of_the_issue": "Not applicable — all reported bugs verified as resolved; no new functional defects found."
+}

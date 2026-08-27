@@ -33,13 +33,13 @@ if (isset($_SESSION['last_submit']) && (time() - $_SESSION['last_submit']) < 30)
     exit;
 }
 
-$nom       = htmlspecialchars(trim($_POST['name'] ?? ''), ENT_QUOTES, 'UTF-8');
-$prenom    = htmlspecialchars(trim($_POST['surname'] ?? ''), ENT_QUOTES, 'UTF-8');
-$ville     = htmlspecialchars(trim($_POST['ville'] ?? ''), ENT_QUOTES, 'UTF-8');
-$cp        = htmlspecialchars(trim($_POST['cp'] ?? ''), ENT_QUOTES, 'UTF-8');
+$nom       = trim($_POST['name'] ?? '');
+$prenom    = trim($_POST['surname'] ?? '');
+$ville     = trim($_POST['ville'] ?? '');
+$cp        = trim($_POST['cp'] ?? '');
 $email     = trim($_POST['email'] ?? '');
-$telephone = htmlspecialchars(trim($_POST['tel'] ?? ''), ENT_QUOTES, 'UTF-8');
-$message   = htmlspecialchars(trim($_POST['message'] ?? ''), ENT_QUOTES, 'UTF-8');
+$telephone = trim($_POST['tel'] ?? '');
+$message   = trim($_POST['message'] ?? '');
 
 if (empty($nom) || empty($prenom) || empty($message) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $_SESSION['form_error'] = "Veuillez vérifier les champs obligatoires ou l'adresse email.";
@@ -105,6 +105,9 @@ try {
     $_SESSION['last_submit'] = time();
     $_SESSION['form_success'] = true;
 } catch (Exception $e) {
+    // Anti-spam : on incrémente le throttle même en cas d'échec pour éviter
+    // qu'un bot rejoue l'envoi en boucle sur un SMTP momentanément indisponible.
+    $_SESSION['last_submit'] = time();
     error_log('[Contact] Erreur PHPMailer : ' . $mail->ErrorInfo);
     $_SESSION['form_error'] = "Une erreur est survenue lors de l'envoi. Merci de réessayer plus tard.";
 }

@@ -106,7 +106,9 @@ body.no-header-image .header-title h1 {
     font-size: 2rem;
 }
 
-body.infopratique main,
+body.infopratique main {
+    margin-top: 200px;
+}
 body.mentionslegales main {
     margin-top: 20px;
 }
@@ -118,7 +120,9 @@ body.mentionslegales main {
     body.no-header-image .header-title h1 {
         font-size: 1.5rem;
     }
-    body.infopratique main,
+    body.infopratique main {
+        margin-top: 120px;
+    }
     body.mentionslegales main {
         margin-top: 10px;
     }
@@ -126,71 +130,86 @@ body.mentionslegales main {
 
 /* === Page Mentions Légales === */
 .mentions-wrapper {
-    max-width: 1000px;
+    max-width: 900px;
     margin: 20px auto 40px;
     padding: 0 20px;
+    color: #2b2b2b;
+    line-height: 1.65;
 }
 
 .mentions-intro {
     text-align: center;
     font-size: 1.05rem;
     color: #333;
+    margin-bottom: 30px;
+    padding: 16px 20px;
+    background: #fdfaf5;
+    border-left: 4px solid #e6cc3d;
+    border-radius: 6px;
+}
+
+.mentions-section {
+    background: #fff;
+    border-radius: 10px;
+    padding: 22px 26px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
-.pdf-viewer {
-    width: 100%;
-    height: 80vh;
-    min-height: 500px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    background: #f0eee8;
+.mentions-section h2 {
+    background-color: #e0f2a2;
+    padding: 8px 16px;
+    font-size: 1.25rem;
+    border-radius: 6px;
+    text-align: left;
+    margin: 0 0 14px 0;
+    color: #2b2b2b;
 }
 
-.pdf-viewer object,
-.pdf-viewer iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    display: block;
+.mentions-section p {
+    margin: 8px 0;
+    padding: 0;
 }
 
-.mentions-fallback {
-    text-align: center;
-    margin-top: 20px;
-    color: #555;
-    font-size: 0.95rem;
-}
-
-.mentions-fallback a {
+.mentions-section a {
     color: #050a9f;
     font-weight: 600;
+    text-decoration: none;
 }
 
-.mentions-missing {
-    text-align: center;
-    padding: 40px 20px;
-    background-color: #fdfaf5;
-    border: 1px dashed #b7a664;
-    border-radius: 10px;
-    color: #333;
+.mentions-section a:hover {
+    text-decoration: underline;
 }
 
-.mentions-missing h3 {
-    margin-top: 0;
+.mentions-placeholder {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #fff3cd;
     color: #7a5c0a;
+    border-radius: 4px;
+    font-style: italic;
+    font-size: 0.92rem;
+    border: 1px dashed #d4a92c;
 }
 
-.mentions-missing a {
-    color: #050a9f;
-    font-weight: 600;
+.mentions-updated {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 30px;
 }
 
 @media (max-width: 768px) {
-    .pdf-viewer {
-        height: 70vh;
-        min-height: 400px;
+    .mentions-wrapper {
+        margin: 10px auto 30px;
+        padding: 0 12px;
+    }
+    .mentions-section {
+        padding: 16px 18px;
+    }
+    .mentions-section h2 {
+        font-size: 1.1rem;
     }
 }
 
@@ -967,7 +986,7 @@ body.apropos {
 }
 
 body.apropos .cadre {
-  margin-top: 120px;
+  margin-top: 20px;
 }
 
 .portrait {
@@ -1239,7 +1258,7 @@ input:focus, textarea:focus {
 }
 
 body.contact main {
-    margin-top: 100px;
+    margin-top: 20px;
 }
 
 /* Responsive Page Contact */
