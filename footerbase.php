@@ -7,10 +7,10 @@
             <li>Téléphone : 06 35 17 86 90</li>
             <li>Email : gaec@leboisfrican.fr</li>
         </ul>
-        <a class="footer-link" href="<?= $basePath ?>fbf_contact.php">@ Nous contacter</a>
+        <a class="footer-link" href="mailto:gaec@leboisfrican.fr" data-testid="footer-mailto">@ Nous contacter</a>
     </div>
 
-    <a class="footer-mentions" href="<?= $basePath ?>fbf_contact.php">Mentions Légales</a>
+    <a class="footer-mentions" href="<?= $basePath ?>fbf_mentionslegales.php" data-testid="footer-mentions">Mentions Légales</a>
 
     <div class="footer-bottom">
         <div class="logo-footer">

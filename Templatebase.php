@@ -30,6 +30,7 @@ $basePath = $basePath ?? './';
     elseif ($title === 'Contact') echo 'contact';
     elseif ($title === 'Découverte') echo 'decouverte'; 
     elseif ($title === 'Infos Pratiques') echo 'infopratique';
+    elseif ($title === 'Mentions Légales') echo 'mentionslegales';
     elseif (in_array($title, ['Ferme', 'Animaux', 'Ateliers'])) echo 'scroll-top-visible';
     if (empty(trim($headerImage))) {
     echo ' no-header-image';

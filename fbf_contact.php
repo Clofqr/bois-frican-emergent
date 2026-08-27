@@ -63,7 +63,7 @@ ob_start();
         </div>
 
         <h4>Mentions Légales et Conditions Générales d'utilisation</h4>
-        <a href="fbf_mentionslegales.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf" data-testid="mentions-legales-link">Consulter les mentions légales</a>
+        <a href="fbf_mentionslegales.php" target="_blank" rel="noopener noreferrer" data-testid="mentions-legales-link">Consulter les mentions légales</a>
     </div>
 
 <?php

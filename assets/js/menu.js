@@ -29,23 +29,22 @@ document.addEventListener('DOMContentLoaded', function () {
             const isOpen = menu.classList.contains('show');
             const isMobile = window.matchMedia('(max-width: 900px)').matches;
 
+            // Sur mobile (menu hamburger) : navigation directe vers la page,
+            // pas d'ouverture de sous-menu. Les sous-items restent accessibles
+            // sur la page cible.
+            if (isMobile) {
+                return; // laisse le lien naviguer normalement
+            }
+
             if (!isOpen) {
-                // Premier clic : ouvre le sous-menu, empêche la navigation
+                // Desktop, premier clic : ouvre le sous-menu, empêche la navigation
                 e.preventDefault();
                 e.stopPropagation();
                 closeAllDropdowns(dropdown);
                 menu.classList.add('show');
                 return;
             }
-
-            // Sous-menu déjà ouvert :
-            //  - Mobile  : le referme (pas de navigation immédiate)
-            //  - Desktop : laisse naviguer vers la page
-            if (isMobile) {
-                e.preventDefault();
-                e.stopPropagation();
-                menu.classList.remove('show');
-            }
+            // Desktop, deuxième clic : laisse naviguer vers la page
         });
 
         // Survol : ouvre sur desktop uniquement

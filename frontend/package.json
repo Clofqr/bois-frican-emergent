@@ -4,6 +4,6 @@
   "private": true,
   "description": "Shim qui lance le serveur PHP intégré pour l'aperçu Emergent (le vrai code du site est en PHP à la racine /app)",
   "scripts": {
-    "start": "php -S 0.0.0.0:3000 -t /app /app/.emergent_router.php"
+    "start": "bash /app/frontend/start.sh"
   }
 }

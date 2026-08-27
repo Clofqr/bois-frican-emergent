@@ -86,6 +86,114 @@ header {
   height: auto;
 }
 
+/* === Pages sans image de header (Infos Pratiques, Contact, Mentions Légales) ===
+   Réduit l'espace vide qui apparaissait en haut du header quand il n'y a
+   pas d'image de fond, tout en gardant assez de place pour le titre et le menu. */
+body.no-header-image header {
+    margin-bottom: 20px;
+    min-height: 0;
+    padding-bottom: 20px;
+}
+
+body.no-header-image .cover {
+    position: relative;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+body.no-header-image .header-title h1 {
+    margin: 0 0 15px 0;
+    font-size: 2rem;
+}
+
+body.infopratique main,
+body.mentionslegales main {
+    margin-top: 20px;
+}
+
+@media (max-width: 900px) {
+    body.no-header-image .header-title {
+        padding-top: 55px;
+    }
+    body.no-header-image .header-title h1 {
+        font-size: 1.5rem;
+    }
+    body.infopratique main,
+    body.mentionslegales main {
+        margin-top: 10px;
+    }
+}
+
+/* === Page Mentions Légales === */
+.mentions-wrapper {
+    max-width: 1000px;
+    margin: 20px auto 40px;
+    padding: 0 20px;
+}
+
+.mentions-intro {
+    text-align: center;
+    font-size: 1.05rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.pdf-viewer {
+    width: 100%;
+    height: 80vh;
+    min-height: 500px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    background: #f0eee8;
+}
+
+.pdf-viewer object,
+.pdf-viewer iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
+.mentions-fallback {
+    text-align: center;
+    margin-top: 20px;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.mentions-fallback a {
+    color: #050a9f;
+    font-weight: 600;
+}
+
+.mentions-missing {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #fdfaf5;
+    border: 1px dashed #b7a664;
+    border-radius: 10px;
+    color: #333;
+}
+
+.mentions-missing h3 {
+    margin-top: 0;
+    color: #7a5c0a;
+}
+
+.mentions-missing a {
+    color: #050a9f;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .pdf-viewer {
+        height: 70vh;
+        min-height: 400px;
+    }
+}
+
 .background-image {
     position: absolute;
     top: 0;
