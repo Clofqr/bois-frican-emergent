@@ -1,0 +1,91 @@
+# =====================================================================
+#  Bois Frican - Configuration Apache (OVH / mutualisé)
+# =====================================================================
+
+# Activation du moteur de réécriture (nécessaire pour toute règle Rewrite)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # === Décommenter pour forcer HTTPS (une fois le certificat OVH activé) ===
+    # RewriteCond %{HTTPS} !=on
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
+
+    # === Décommenter pour rediriger www vers non-www (ou l'inverse) ===
+    # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    # RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301,NE]
+
+    # Répertoire courant traité comme racine
+    # RewriteBase /
+</IfModule>
+
+# =====================================================================
+#  Sécurité : bloquer l'accès aux fichiers et dossiers sensibles
+# =====================================================================
+<FilesMatch "^(\.env|\.env\.example|composer\.(json|lock)|package\.json|package-lock\.json|yarn\.lock|start\.sh|\.emergent_router\.php|test_result\.md|README\.md|\.htaccess|\.gitignore|\.gitattributes)$">
+    Require all denied
+</FilesMatch>
+
+# Blocage des dossiers spécifiques
+RedirectMatch 403 (?i)^/(vendor|memory|test_reports|frontend|backend|\.git|node_modules)(/.*)?$
+
+# Empêche l'exécution de scripts dans les dossiers d'upload / images
+<Directory "images">
+    <FilesMatch "\.(php|phtml|phar|pl|py|sh|cgi)$">
+        Require all denied
+    </FilesMatch>
+</Directory>
+
+# =====================================================================
+#  Page par défaut
+# =====================================================================
+DirectoryIndex index.php index.html
+
+# =====================================================================
+#  Cache navigateur pour les assets statiques (charge plus rapide)
+# =====================================================================
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 hour"
+
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+
+    ExpiresByType video/mp4 "access plus 1 month"
+    ExpiresByType video/webm "access plus 1 month"
+
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType application/pdf "access plus 1 week"
+
+    ExpiresByType font/woff "access plus 1 month"
+    ExpiresByType font/woff2 "access plus 1 month"
+</IfModule>
+
+# =====================================================================
+#  Compression gzip (accélère le chargement HTML / CSS / JS)
+# =====================================================================
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE application/json application/xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# =====================================================================
+#  En-têtes de sécurité (recommandations OWASP)
+# =====================================================================
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    # Header set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+</IfModule>
+
+# =====================================================================
+#  Charset par défaut
+# =====================================================================
+AddDefaultCharset UTF-8

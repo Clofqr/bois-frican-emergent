@@ -112,3 +112,31 @@ Rapport : `/app/test_reports/iteration_4.json`
 
 ### Recommandation testing agent (non-bloquant)
 - Compresser `images/video1.mp4` (44 MB → idéalement < 5 MB, MP4 faststart) pour que la vidéo joue réellement au lieu d'afficher seulement le poster. Le fichier actuel dépasse ce que Chromium peut charger en une passe → networkState=3.
+
+## Itération 6 (2026-01)
+
+### Position des h1 (Accueil, Découverte, Infos Pratiques)
+- **Desktop** : `.cover` margin-top réduit de 30px à 15px → h1 remonte vers le haut de la page (y=36 sur 1440x900, largement au-dessus des boutons du menu à y=112).
+- **Mobile** : `.header-title` padding-top passé de 70px à 8px et text-align:left → h1 aligné horizontalement avec le bouton hamburger (h1 à y=20, hamburger à y=32 sur 390x800), plus poussé sous.
+
+### Portabilité OVH + Windows local
+- **Nouveau `.htaccess` racine** (Apache OVH) :
+  - Deny sur `.env`, `composer.*`, `start.sh`, `.emergent_router.php`, `.git*`, `README.md`
+  - RedirectMatch 403 sur `vendor/`, `memory/`, `test_reports/`, `frontend/`, `backend/`, `.git`, `node_modules`
+  - Blocage exécution PHP dans `images/` (uploads futurs)
+  - Cache statique 1 mois pour images/vidéos, 1 semaine pour CSS/JS
+  - Compression gzip
+  - Headers de sécurité OWASP (X-Content-Type-Options, X-Frame-Options, Referrer-Policy)
+  - Redirections HTTPS/www commentées, à décommenter au besoin
+- **`vendor/.htaccess`** : deny all (double sécurité).
+- **`README.md` refait** avec 3 sections : local Windows (via `php -S`, XAMPP), déploiement OVH pas-à-pas (composer, FTP, .env sur serveur), fichiers à ne pas uploader.
+
+### Vérifications Windows-compat
+- Aucun chemin dur (`C:\`, `/var/www`, `/home/`) dans le PHP
+- Aucun `shell_exec` / `exec` / `system` / `passthru`
+- Tous les `__DIR__`, `require`, `include` utilisent des séparateurs `/` (compatibles Windows)
+- Tous les .php compilent sans warning
+
+### Validation
+- 7/7 pages retournent 200 sur Preview
+- H1 mesuré : desktop y=36 (au-dessus nav y=112), mobile y=20 (face hamburger y=32)

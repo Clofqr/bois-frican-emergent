@@ -143,7 +143,7 @@ body.mentionslegales main {
 
 @media (max-width: 900px) {
     body.no-header-image .header-title {
-        padding-top: 55px;
+        padding-top: 8px;
     }
     body.no-header-image .header-title h1 {
         font-size: 1.5rem;
@@ -280,11 +280,12 @@ body.mentionslegales main {
     flex-direction: column;
     align-items: center;
     z-index: 2;
-    margin-top: 30px;
+    margin-top: 15px;
 }
 
 .header-title {
     color: #030303;
+    margin: 0 0 8px 0;
 }
 
 .container {
@@ -372,23 +373,26 @@ body.mentionslegales main {
 
 /* --- Menu Responsive --- */
 @media (max-width: 900px) {
-  /* Décale le titre de la page vers le bas pour ne pas se superposer
-     au bouton hamburger (qui est positionné en haut à droite). */
+  /* Titre aligné horizontalement avec le bouton hamburger
+     (au lieu d'être poussé bien en dessous). Le padding-right laisse
+     la place au bouton hamburger positionné en haut à droite. */
   .header-title {
-    padding-top: 70px;
-    padding-right: 60px;
+    padding-top: 8px;
+    padding-right: 70px;
     padding-left: 10px;
     width: 100%;
     box-sizing: border-box;
+    text-align: left;
   }
 
   .header-title h1 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     margin: 0 0 8px 0;
+    line-height: 1.2;
   }
 
   .cover {
-    margin-top: 15px;
+    margin-top: 12px;
   }
 
   /* Bouton hamburger avec bordure noire fine */
