@@ -1,6 +1,6 @@
 
-<video class="video" autoplay loop muted>
-  <source src="images/video.webm" type="video/webm">
+<video class="video" autoplay loop muted playsinline preload="metadata">
+  <source src="images/Video.webm" type="video/webm">
   <source src="images/Video.mp4" type="video/mp4">
   Votre navigateur ne supporte pas la vidéo.
 </video>

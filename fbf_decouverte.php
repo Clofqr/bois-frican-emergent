@@ -11,9 +11,9 @@ function capture_include(string $filePath): string {
     return ob_get_clean();
 }
 
-$ateliersHtml = capture_include('fbf_ateliers.php');
-$animauxHtml  = capture_include('fbf_animaux.php');
-$fermeHtml    = capture_include('fbf_ferme.php');
+$ateliersHtml = capture_include(__DIR__ . '/fbf_ateliers.php');
+$animauxHtml  = capture_include(__DIR__ . '/fbf_animaux.php');
+$fermeHtml    = capture_include(__DIR__ . '/fbf_ferme.php');
 
 $mainContent = 
     '<section id="ateliers">'
@@ -77,6 +77,6 @@ $mainContent =
     .'section { scroll-margin-top: 80px; }'
     .'</style>';
 
-include 'Templatebase.php';
-include 'footerbase.php';
+include __DIR__ . '/Templatebase.php';
+include __DIR__ . '/footerbase.php';
 ?>

@@ -140,3 +140,30 @@ Rapport : `/app/test_reports/iteration_4.json`
 ### Validation
 - 7/7 pages retournent 200 sur Preview
 - H1 mesuré : desktop y=36 (au-dessus nav y=112), mobile y=20 (face hamburger y=32)
+
+## Itération 6 (2026-01) - Autonomie totale du projet (XAMPP + OVH)
+
+### Bug initial rapporté
+`.htaccess` contenait `<Directory "images">` qui est **invalide en contexte .htaccess** → Apache 500 sur XAMPP avec le message "Directory not allowed here".
+
+### Fichiers modifiés
+| Fichier | Raison |
+|---|---|
+| `/app/.htaccess` | Suppression du bloc `<Directory>` (source du 500). Remplacement des `RedirectMatch ^/` par des `RewriteRule (^|/)` pour fonctionner aussi en sous-dossier. Suppression des noms Emergent-only du FilesMatch. Ajout dotfile-block générique. |
+| `/app/images/.htaccess` | **Nouveau** — remplace le `<Directory>` supprimé du fichier racine (FilesMatch bloquant .php/.phtml/.phar/.sh/.py/etc). |
+| `/app/memory/.htaccess` `/app/test_reports/.htaccess` `/app/backend/.htaccess` `/app/frontend/.htaccess` `/app/admin/.htaccess` | **Nouveaux** — `Require all denied` pour protéger ces dossiers indépendamment du chemin d'installation (double protection, marche même sans mod_rewrite). |
+| `/app/index.php` | Ajout de `$basePath = './'` avant l'include, chemin absolu `__DIR__ . '/...'`. Résout le bug critique en sous-dossier : sans ça, la home page cherchait ses assets un niveau au-dessus de la racine du projet. |
+| `/app/accueil/fbf_accueil.php` | `$basePath = $basePath ?? '../'` (fallback null-safe pour l'accès direct à la page). Les 8 `<img>` + `<video>` du carrousel utilisent maintenant `$basePath` au lieu de `../` en dur. |
+| `/app/fbf_apropos.php` `/app/fbf_contact.php` `/app/fbf_decouverte.php` `/app/fbf_infopratique.php` `/app/fbf_mentionslegales.php` | `include __DIR__ . '/Templatebase.php'` et `include __DIR__ . '/footerbase.php'` — chemins absolus pour marcher que le CWD soit la racine ou un sous-dossier. |
+| `/app/fbf_decouverte.php` lignes 14-16 | `capture_include(__DIR__ . '/fbf_*.php')` — même raison. |
+| `/app/fbf_ferme.php` | `src="images/Video.webm"` (V majuscule, case-sensitive Linux OVH). Ajout `playsinline preload="metadata"`. |
+| `/app/.gitignore` | Refait — exclut `.env`, `vendor/`, `frontend/`, `backend/`, `memory/`, `test_reports/`, `.emergent/`, `.emergent_router.php`, `.ruff_cache`, `test_result.md`, `yarn.lock`, fichiers IDE/OS. |
+| `/app/.gitattributes` | **Nouveau** — `export-ignore` sur les dossiers Emergent-only (pour `git archive`) + `eol=lf` sur tous les fichiers texte. |
+| `/app/README.md` | Refait — aucune mention d'Emergent, sections XAMPP Windows, PHP intégré, OVH mutualisé. |
+
+### Testing agent : 87/87 assertions bash + Playwright 100 %
+Rapport : `/app/test_reports/iteration_6.json`. Testé sur DEUX vhosts :
+- 127.0.0.1:8080 (DocumentRoot=/app) — cas OVH racine
+- 127.0.0.1:8081/bois-frican (symlink) — cas XAMPP réel sous-dossier
+
+Le projet est maintenant **totalement autonome**, sans dépendance à l'environnement Emergent, à /app/... ni à WSL. Il fonctionne à la racine d'un domaine ou dans un sous-dossier, sur XAMPP Windows comme sur OVH mutualisé.

@@ -1,4 +1,6 @@
+apache2=2.4.68-1~deb12u1
 cron=3.0pl1-162
+libapache2-mod-php=2:8.2+93
 php-cli=2:8.2+93
 php-mbstring=2:8.2+93
 php-xml=2:8.2+93

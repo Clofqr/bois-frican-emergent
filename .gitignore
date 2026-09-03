@@ -1,9 +1,29 @@
+# === Secrets ===
 .env
-
-/vendor/
 .env.*
 *.env
 credentials.json
+.credentials
 *.pem
 *.key
-.credentials
+
+# === Composer ===
+/vendor/
+
+# === Fichiers d'IDE / OS ===
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# === Fichiers spécifiques à l'environnement Emergent (à ne pas déployer) ===
+/frontend/
+/backend/
+/memory/
+/test_reports/
+/.emergent/
+/.emergent_router.php
+.ruff_cache/
+test_result.md
+yarn.lock

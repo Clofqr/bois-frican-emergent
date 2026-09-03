@@ -82,7 +82,7 @@ $mainContent ='
 
 ';
 
-include 'Templatebase.php';
-include 'footerbase.php';
+include __DIR__ . '/Templatebase.php';
+include __DIR__ . '/footerbase.php';
 
 ?>

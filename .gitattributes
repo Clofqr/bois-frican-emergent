@@ -1,0 +1,21 @@
+# Fichiers exclus lorsqu'on utilise `git archive` (téléchargements ZIP GitHub, etc.)
+frontend/          export-ignore
+backend/           export-ignore
+memory/            export-ignore
+test_reports/      export-ignore
+.emergent/         export-ignore
+.emergent_router.php export-ignore
+.ruff_cache/       export-ignore
+test_result.md     export-ignore
+yarn.lock          export-ignore
+.gitignore         export-ignore
+.gitattributes     export-ignore
+
+# Fins de ligne LF, texte UTF-8 (évite les soucis Windows/Unix)
+*.php  text eol=lf
+*.js   text eol=lf
+*.css  text eol=lf
+*.html text eol=lf
+*.md   text eol=lf
+*.json text eol=lf
+*.htaccess text eol=lf

@@ -1,0 +1,5 @@
+# Empêche l'exécution de tout script dans le dossier images/
+# (utile si un futur formulaire d'upload atterrit ici).
+<FilesMatch "\.(php|phtml|phar|pl|py|sh|cgi|asp|aspx|jsp)$">
+    Require all denied
+</FilesMatch>

@@ -1,6 +1,8 @@
 <?php
 $title = "Accueil";
-$basePath = '../';
+// Utilise $basePath défini par index.php ('./'), sinon '../' quand la page
+// est appelée directement via /accueil/fbf_accueil.php.
+$basePath = $basePath ?? '../';
 
 $headerImage = "accueil/bienvenue_cover.jpg";
 
@@ -55,17 +57,17 @@ $mainContent = '
 <section id="carousel-menu">
     <div class="carousel-container carousel-accueil">
         <div class="carousel-slide">
-            <video class="carousel-video" autoplay loop muted playsinline preload="metadata" poster="../images/gallery_accueil2.jpg">
-                <source src="../images/video1.mp4" type="video/mp4">
+            <video class="carousel-video" autoplay loop muted playsinline preload="metadata" poster="' . $basePath . 'images/gallery_accueil2.jpg">
+                <source src="' . $basePath . 'images/video1.mp4" type="video/mp4">
             </video>
-            <img src="../images/gallery_accueil2.jpg" alt="Pâturage">
-            <img src="../images/poneys_gallery1.jpg" alt="Les poneys">
-            <img src="../images/vaches_gallery6.jpg" alt="Les vaches">
-            <img src="../images/atelier_gallery.jpg" alt="Ateliers et séjours">
-            <img src="../images/gallery_accueil_michka.jpg" alt="Michka">
-            <img src="../images/vaches_traite.jpg" alt="La traite">
-            <img src="../images/logement_sejour.jpg" alt="Vacances à la ferme">
-            <img src="../images/gallery_accueil3.jpg" alt="Logement séjour équestre">
+            <img src="' . $basePath . 'images/gallery_accueil2.jpg" alt="Pâturage">
+            <img src="' . $basePath . 'images/poneys_gallery1.jpg" alt="Les poneys">
+            <img src="' . $basePath . 'images/vaches_gallery6.jpg" alt="Les vaches">
+            <img src="' . $basePath . 'images/atelier_gallery.jpg" alt="Ateliers et séjours">
+            <img src="' . $basePath . 'images/gallery_accueil_michka.jpg" alt="Michka">
+            <img src="' . $basePath . 'images/vaches_traite.jpg" alt="La traite">
+            <img src="' . $basePath . 'images/logement_sejour.jpg" alt="Vacances à la ferme">
+            <img src="' . $basePath . 'images/gallery_accueil3.jpg" alt="Logement séjour équestre">
         </div>
         <button class="carousel-prev" aria-label="Image précédente">Précédent</button>
         <button class="carousel-next" aria-label="Image suivante">Suivant</button>
@@ -73,8 +75,8 @@ $mainContent = '
 </section>
 ';
 
-include '../Templatebase.php';
-include '../footerbase.php';
+include __DIR__ . '/../Templatebase.php';
+include __DIR__ . '/../footerbase.php';
 ?>
 
 

@@ -71,6 +71,6 @@ ob_start();
 
 $mainContent = ob_get_clean();
 
-include 'Templatebase.php';
-include 'footerbase.php';
+include __DIR__ . '/Templatebase.php';
+include __DIR__ . '/footerbase.php';
 ?>
